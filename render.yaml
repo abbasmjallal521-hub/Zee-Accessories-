@@ -12,6 +12,6 @@ services:
       - key: GITHUB_TOKEN
         sync: false
       - key: GITHUB_REPO
-        value: abbasmjallal521-hub/Zee-Accessories
+        value: abbasmjallal521-hub/Zee-Accessories-
       - key: DATA_BRANCH
         value: data
