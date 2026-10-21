@@ -1,0 +1,151 @@
+{
+ "whatsapp": "",
+ "menLine": "تفاصيل راقية بتكمّل حضورك",
+ "womenLine": "لمسة أناقة بتكمّل إطلالتك",
+ "products": [
+  {
+   "id": "m1",
+   "sec": "men",
+   "cat": "ساعات",
+   "icon": "watch",
+   "name": "ساعة كلاسيك ستيل",
+   "desc": "مينا كحلي، ٤٢ ملم",
+   "price": 45,
+   "old": 59,
+   "tag": "الأكثر طلباً",
+   "img": ""
+  },
+  {
+   "id": "m2",
+   "sec": "men",
+   "cat": "ساعات",
+   "icon": "watch",
+   "name": "ساعة جلد بني",
+   "desc": "قشاط جلد طبيعي",
+   "price": 38,
+   "old": 0,
+   "tag": "",
+   "img": ""
+  },
+  {
+   "id": "m3",
+   "sec": "men",
+   "cat": "محافظ",
+   "icon": "wallet",
+   "name": "محفظة جلد سليم",
+   "desc": "٦ كروت + جيبة مصاري",
+   "price": 22,
+   "old": 0,
+   "tag": "",
+   "img": ""
+  },
+  {
+   "id": "m4",
+   "sec": "men",
+   "cat": "أساور",
+   "icon": "bracelet",
+   "name": "سوار حجر أونيكس",
+   "desc": "خرز ٨ ملم",
+   "price": 12,
+   "old": 0,
+   "tag": "جديد",
+   "img": ""
+  },
+  {
+   "id": "m5",
+   "sec": "men",
+   "cat": "نظارات",
+   "icon": "glasses",
+   "name": "نظارة أفياتور",
+   "desc": "عدسات مستقطبة UV400",
+   "price": 28,
+   "old": 0,
+   "tag": "",
+   "img": ""
+  },
+  {
+   "id": "m6",
+   "sec": "men",
+   "cat": "قشاط",
+   "icon": "belt",
+   "name": "قشاط جلد أسود",
+   "desc": "بكلة معدن مطفي",
+   "price": 19,
+   "old": 0,
+   "tag": "",
+   "img": ""
+  },
+  {
+   "id": "w1",
+   "sec": "women",
+   "cat": "عقود",
+   "icon": "necklace",
+   "name": "عقد قلادة ذهبي",
+   "desc": "مطلي ذهب ١٨ قيراط",
+   "price": 32,
+   "old": 40,
+   "tag": "الأكثر طلباً",
+   "img": ""
+  },
+  {
+   "id": "w2",
+   "sec": "women",
+   "cat": "حلق",
+   "icon": "earrings",
+   "name": "حلق نقطة لؤلؤ",
+   "desc": "فضة ٩٢٥",
+   "price": 18,
+   "old": 0,
+   "tag": "",
+   "img": ""
+  },
+  {
+   "id": "w3",
+   "sec": "women",
+   "cat": "خواتم",
+   "icon": "ring",
+   "name": "خاتم زركون",
+   "desc": "قياس قابل للتعديل",
+   "price": 15,
+   "old": 0,
+   "tag": "جديد",
+   "img": ""
+  },
+  {
+   "id": "w4",
+   "sec": "women",
+   "cat": "شنط",
+   "icon": "bag",
+   "name": "شنطة يد صغيرة",
+   "desc": "٣ ألوان",
+   "price": 42,
+   "old": 0,
+   "tag": "",
+   "img": ""
+  },
+  {
+   "id": "w5",
+   "sec": "women",
+   "cat": "أساور",
+   "icon": "bracelet",
+   "name": "سوار تشارم",
+   "desc": "٥ تعليقات",
+   "price": 21,
+   "old": 0,
+   "tag": "",
+   "img": ""
+  },
+  {
+   "id": "w6",
+   "sec": "women",
+   "cat": "شالات",
+   "icon": "scarf",
+   "name": "شال حرير",
+   "desc": "٩٠×٩٠ سم",
+   "price": 24,
+   "old": 0,
+   "tag": "",
+   "img": ""
+  }
+ ]
+}

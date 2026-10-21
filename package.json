@@ -1,0 +1,13 @@
+{
+  "name": "zee-accessories",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Zee Accessories shop: men's and women's sections, cart, WhatsApp orders, admin page",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

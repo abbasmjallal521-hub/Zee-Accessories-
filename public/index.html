@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Zee Accessories</title>
+<meta name="description" content="Zee Accessories — إكسسوارات رجالية ونسائية، توصيل لكل لبنان والدفع عند الاستلام.">
+<meta name="theme-color" content="#efe7dc">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@500;600&family=Cormorant+Garamond:wght@600;700&family=Playfair+Display:wght@500;600&family=Tajawal:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/styles.css">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8e6526"/><stop offset=".45" stop-color="#e2c27a"/><stop offset=".7" stop-color="#b88a3e"/><stop offset="1" stop-color="#8e6526"/>
+    </linearGradient>
+    <filter id="emboss" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.2" flood-color="#5a4320" flood-opacity=".35"/>
+    </filter>
+  </defs>
+</svg>
+
+<header>
+  <div class="wrap bar">
+    <div class="brand"><b><i>Z</i>ee</b><span>ACCESSORIES</span></div>
+    <div class="tools">
+      <button class="icon-btn" id="openCart" aria-label="فتح العربة">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+        <span class="n" id="count">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <svg class="logo" viewBox="0 0 320 210" role="img" aria-label="Zee Accessories">
+      <g filter="url(#emboss)">
+        <text class="z" x="30" y="128" font-size="150" fill="url(#gold)">Z</text>
+        <text class="z" x="128" y="128" font-size="104" fill="#2f2b27">ee</text>
+        <path d="M52 140 C 110 96, 190 58, 290 56 C 200 64, 120 100, 60 142 Z" fill="url(#gold)"/>
+        <text class="caps" x="160" y="168" font-size="18" letter-spacing="7" text-anchor="middle" fill="#2f2b27">ACCESSORIES</text>
+      </g>
+      <line x1="62" y1="190" x2="146" y2="190" stroke="url(#gold)" stroke-width="1.4"/>
+      <line x1="174" y1="190" x2="258" y2="190" stroke="url(#gold)" stroke-width="1.4"/>
+      <path d="M160 180l2.4 7.6L170 190l-7.6 2.4L160 200l-2.4-7.6L150 190l7.6-2.4z" fill="url(#gold)"/>
+    </svg>
+    <p id="tagline"></p>
+    <div class="perks"><span><i></i>توصيل لكل لبنان</span><span><i></i>الدفع عند الاستلام</span></div>
+  </section>
+
+  <div class="switch" role="tablist">
+    <button role="tab" aria-selected="false" data-sec="women"><b>نسائي</b><small>WOMEN</small></button>
+    <button role="tab" aria-selected="true" data-sec="men"><b>رجالي</b><small>MEN</small></button>
+  </div>
+
+  <div class="filters" id="filters"></div>
+  <div class="sec-title"><span id="secName">مجموعة الرجال</span><em id="secCount"></em></div>
+  <div class="grid" id="grid"><p class="loading">عم نحضّر القطع…</p></div>
+</main>
+
+<footer>
+  <div class="orn"><svg viewBox="0 0 16 16"><path d="M8 0l1.8 6.2L16 8l-6.2 1.8L8 16l-1.8-6.2L0 8l6.2-1.8z" fill="url(#gold)"/></svg></div>
+  <div class="brand"><b><i>Z</i>ee</b><span>ACCESSORIES</span></div>
+</footer>
+
+<div class="shade" id="shade" hidden></div>
+<aside class="drawer" id="drawer" aria-label="عربة التسوق">
+  <div class="dhead"><h2>عربتك</h2><button class="x" id="closeCart" aria-label="إغلاق">×</button></div>
+  <div class="orn" style="width:100%;margin:8px 0 0"><svg viewBox="0 0 16 16"><path d="M8 0l1.8 6.2L16 8l-6.2 1.8L8 16l-1.8-6.2L0 8l6.2-1.8z" fill="url(#gold)"/></svg></div>
+  <div class="items" id="items"></div>
+  <div class="dfoot">
+    <div class="tot"><span>الإجمالي</span><b id="total">$0</b></div>
+    <a class="btn-gold" id="checkout" href="#" target="_blank" rel="noopener">أرسل الطلب عالواتساب</a>
+  </div>
+</aside>
+
+<script src="/common.js"></script>
+<script>
+const plus = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg>';
+const tick = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
+let D = { whatsapp:'', menLine:'تفاصيل راقية بتكمّل حضورك', womenLine:'لمسة أناقة بتكمّل إطلالتك', products:[] };
+let loaded = false, sec = location.hash === '#women' ? 'women' : 'men', cat = 'الكل', cart = {};
+const find = id => D.products.find(p => p.id === id);
+try { cart = JSON.parse(localStorage.getItem('zee-cart') || '{}') || {}; } catch(e) { cart = {}; }
+const save = () => { try { localStorage.setItem('zee-cart', JSON.stringify(cart)); } catch(e) {} };
+
+function setSec(s){
+  sec = s; cat = 'الكل';
+  document.body.classList.toggle('women', s === 'women');
+  document.querySelectorAll('.switch button').forEach(b => b.setAttribute('aria-selected', b.dataset.sec === s));
+  $('#secName').textContent = s === 'men' ? 'مجموعة الرجال' : 'مجموعة النساء';
+  $('#tagline').textContent = s === 'men' ? D.menLine : D.womenLine;
+  renderFilters(); renderGrid();
+}
+function renderFilters(){
+  const cats = ['الكل', ...new Set(D.products.filter(p => p.sec === sec).map(p => p.cat).filter(Boolean))];
+  $('#filters').innerHTML = cats.length > 1 ? cats.map(c => `<button class="${c===cat?'on':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('') : '';
+}
+function renderGrid(){
+  if (!loaded) return;
+  const list = D.products.filter(p => p.sec === sec && (cat === 'الكل' || p.cat === cat));
+  $('#secCount').textContent = list.length ? list.length + ' قطع' : '';
+  $('#grid').innerHTML = list.length ? list.map(p => `
+    <article class="card">
+      <div class="pic">${p.tag ? `<span class="tag">${esc(p.tag)}</span>` : ''}${visual(p)}</div>
+      <div class="info">
+        <h3>${esc(p.name)}</h3>${p.desc ? `<p>${esc(p.desc)}</p>` : ''}
+        <div class="row">
+          <span class="price">${money(p.price)}${p.old ? `<s>${money(p.old)}</s>` : ''}</span>
+          <button class="add${cart[p.id]?' done':''}" data-id="${esc(p.id)}" aria-label="أضف ${esc(p.name)} للعربة">${cart[p.id]?tick:plus}</button>
+        </div>
+      </div>
+    </article>`).join('') : '<p class="none">قطع جديدة جايي قريباً</p>';
+}
+function renderCart(){
+  const ids = Object.keys(cart).filter(id => cart[id] > 0 && find(id));
+  const count = ids.reduce((s,id) => s + cart[id], 0);
+  const total = ids.reduce((s,id) => s + cart[id] * find(id).price, 0);
+  $('#count').textContent = count;
+  $('#total').textContent = money(total);
+  $('#items').innerHTML = ids.length ? ids.map(id => {
+    const p = find(id);
+    return `<div class="item">
+      <div class="mini">${visual(p)}</div>
+      <div><h4>${esc(p.name)}</h4><small>${p.sec==='men'?'رجالي':'نسائي'} · ${money(p.price)}</small></div>
+      <div class="qty"><button data-inc="${esc(id)}" aria-label="زيد">+</button><span>${cart[id]}</span><button data-dec="${esc(id)}" aria-label="نقّص">−</button></div>
+    </div>`;
+  }).join('') : `<div class="empty">${I.bag.replace('<svg','<svg width="44"')}<span>العربة فاضية لهلق</span></div>`;
+  const co = $('#checkout');
+  if (ids.length){
+    const lines = ids.map(id => { const p = find(id); return `• ${p.name} × ${cart[id]} = ${money(p.price*cart[id])}`; });
+    const msg = `مرحبا Zee Accessories، بدي اطلب:\n${lines.join('\n')}\nالإجمالي: ${money(total)}`;
+    co.href = 'https://wa.me/' + String(D.whatsapp || '').replace(/\D/g, '') + '?text=' + encodeURIComponent(msg);
+    co.removeAttribute('aria-disabled');
+  } else { co.href = '#'; co.setAttribute('aria-disabled','true'); }
+}
+function change(id, d){
+  cart[id] = Math.max(0, (cart[id] || 0) + d);
+  if (!cart[id]) delete cart[id];
+  save(); renderCart(); renderGrid();
+}
+function openCart(o){ $('#drawer').classList.toggle('open', o); $('#shade').hidden = !o; }
+
+document.querySelector('.switch').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setSec(b.dataset.sec); });
+$('#filters').addEventListener('click', e => { const b = e.target.closest('button'); if (b){ cat = b.dataset.cat; renderFilters(); renderGrid(); } });
+$('#grid').addEventListener('click', e => { const b = e.target.closest('.add'); if (b) change(b.dataset.id, 1); });
+$('#items').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.inc) change(b.dataset.inc, 1);
+  if (b.dataset.dec) change(b.dataset.dec, -1);
+});
+$('#openCart').onclick = () => openCart(true);
+$('#closeCart').onclick = () => openCart(false);
+$('#shade').onclick = () => openCart(false);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') openCart(false); });
+
+setSec(sec);
+renderCart();
+fetch('/api/products').then(r => r.json()).then(d => { D = d; loaded = true; setSec(sec); renderCart(); })
+  .catch(() => { $('#grid').innerHTML = '<p class="none">ما قدرنا نحمّل القطع. جرّب حدّث الصفحة.</p>'; });
+</script>
+</body>
+</html>

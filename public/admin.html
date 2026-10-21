@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>إدارة Zee</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2a2724">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@500;600&family=Cormorant+Garamond:wght@600;700&family=Playfair+Display:wght@500;600&family=Tajawal:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/styles.css">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8e6526"/><stop offset=".45" stop-color="#e2c27a"/><stop offset=".7" stop-color="#b88a3e"/><stop offset="1" stop-color="#8e6526"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- login -->
+<div class="wrap" id="loginView">
+  <form class="login" id="loginForm">
+    <div class="brand" style="justify-content:center"><b><i>Z</i>ee</b><span>ACCESSORIES</span></div>
+    <h2>إدارة المحل</h2>
+    <label>كلمة السر<input type="password" id="pw" autocomplete="current-password" dir="ltr"></label>
+    <button class="btn-gold" type="submit" id="loginBtn">فوتي</button>
+    <p class="err" id="loginErr" hidden></p>
+  </form>
+</div>
+
+<!-- editor -->
+<section class="admin page" id="editor" hidden>
+  <div class="top"><div class="wrap"><h2>إدارة Zee</h2><a class="back" href="/" target="_blank" rel="noopener">شوفي المحل ↗</a></div></div>
+  <div class="wrap">
+    <p class="warn" id="storageWarn" hidden>انتبهي: التخزين الدائم مش مركّب لهلق، فالتعديلات بتنمحى إذا رجع اشتغل السيرفر من جديد. لازم ينحط GITHUB_TOKEN بإعدادات Render.</p>
+
+    <div class="panel">
+      <h3>معلومات المحل</h3>
+      <div class="fields">
+        <label class="full">رقم الواتساب مع رمز البلد<input id="a-wa" inputmode="tel" dir="ltr" placeholder="96170123456"></label>
+        <label class="full">الجملة تحت اللوغو (رجالي)<input id="a-men"></label>
+        <label class="full">الجملة تحت اللوغو (نسائي)<input id="a-women"></label>
+      </div>
+    </div>
+
+    <div class="panel" id="formPanel">
+      <h3><span id="formTitle">إضافة قطعة جديدة</span><button class="btn small" id="formReset" type="button" hidden>إلغاء التعديل</button></h3>
+      <div class="photo">
+        <div class="prev" id="f-prev"></div>
+        <div class="acts">
+          <span class="btn dark file">اختاري صورة من الغاليري<input type="file" id="f-file" accept="image/*"></span>
+          <button class="btn small danger" id="f-noimg" type="button" hidden>شيلي الصورة</button>
+          <span class="uploading" id="f-up" hidden>عم ترفع الصورة…</span>
+        </div>
+      </div>
+      <div class="fields">
+        <label>القسم<select id="f-sec"><option value="women">نسائي</option><option value="men">رجالي</option></select></label>
+        <label>النوع<input id="f-cat" list="cats" placeholder="مثلاً: عقود"></label>
+        <label class="full">اسم القطعة<input id="f-name" placeholder="مثلاً: عقد قلادة ذهبي"></label>
+        <label class="full">وصف قصير<input id="f-desc" placeholder="مثلاً: مطلي ذهب، ٤٥ سم"></label>
+        <label>السعر ($)<input id="f-price" type="number" min="0" step="0.5" inputmode="decimal" dir="ltr"></label>
+        <label>السعر القديم (اختياري)<input id="f-old" type="number" min="0" step="0.5" inputmode="decimal" dir="ltr"></label>
+        <label>شارة (اختياري)<input id="f-tag" placeholder="جديد / عرض"></label>
+        <label>أيقونة بلا صورة<select id="f-icon">
+          <option value="necklace">عقد</option><option value="earrings">حلق</option><option value="ring">خاتم</option><option value="bracelet">سوار</option>
+          <option value="bag">شنطة</option><option value="scarf">شال</option><option value="watch">ساعة</option><option value="glasses">نظارة</option>
+          <option value="wallet">محفظة</option><option value="belt">قشاط</option><option value="cuff">أزرار</option><option value="clip">ماسكة</option>
+        </select></label>
+      </div>
+      <datalist id="cats"></datalist>
+      <button class="btn-gold" id="f-save" type="button">أضيفي القطعة</button>
+      <p class="err" id="f-err" hidden></p>
+    </div>
+
+    <div class="panel">
+      <h3><span>القطع بالمحل</span>
+        <span class="atabs"><button data-asec="women" class="on" type="button">نسائي</button><button data-asec="men" type="button">رجالي</button></span>
+      </h3>
+      <div class="plist" id="plist"></div>
+      <button class="btn danger" id="clearAll" type="button">مسح كل القطع</button>
+    </div>
+  </div>
+  <div class="savebar"><div class="wrap">
+    <span class="msg" id="saveMsg">التعديلات ما بتبيّن للزباين إلا بعد ما تكبسي «احفظي».</span>
+    <button class="btn-gold" id="publish" type="button" disabled>احفظي</button>
+  </div></div>
+</section>
+
+<script src="/common.js"></script>
+<script>
+let token = '';
+try { token = localStorage.getItem('zee-admin') || ''; } catch(e) {}
+let W = null, editing = null, fImg = '', asec = 'women', uploading = false;
+
+async function api(method, url, body){
+  const r = await fetch(url, { method, headers: { 'Content-Type':'application/json', Authorization:'Bearer ' + token }, body: body ? JSON.stringify(body) : undefined });
+  if (r.status === 401) { showLogin('خلصت الجلسة، فوتي من جديد.'); throw new Error('auth'); }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw Object.assign(new Error(j.error || 'fail'), { code: j.error });
+  return j;
+}
+function showLogin(msg){
+  token = ''; try { localStorage.removeItem('zee-admin'); } catch(e) {}
+  $('#editor').hidden = true; $('#loginView').hidden = false;
+  $('#loginErr').hidden = !msg; $('#loginErr').textContent = msg || '';
+}
+async function enter(storage){
+  W = await fetch('/api/products', { cache:'no-store' }).then(r => r.json());
+  $('#a-wa').value = W.whatsapp || ''; $('#a-men').value = W.menLine || ''; $('#a-women').value = W.womenLine || '';
+  $('#storageWarn').hidden = storage !== 'local';
+  $('#loginView').hidden = true; $('#editor').hidden = false;
+  resetForm(); renderPlist(); setDirty(false);
+}
+
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  $('#loginBtn').disabled = true; $('#loginErr').hidden = true;
+  try {
+    const r = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: $('#pw').value }) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error);
+    token = j.token; try { localStorage.setItem('zee-admin', token); } catch(e) {}
+    await enter(j.storage);
+  } catch (err) {
+    $('#loginErr').textContent = err.message === 'no_password' ? 'ما في كلمة سر مركّبة. لازم ينحط ADMIN_PASSWORD بإعدادات Render.' : 'كلمة السر غلط.';
+    $('#loginErr').hidden = false;
+  }
+  $('#loginBtn').disabled = false;
+});
+
+function setDirty(v){
+  $('#publish').disabled = !v;
+  $('#saveMsg').textContent = v ? 'في تعديلات ما انحفظت بعد.' : 'التعديلات ما بتبيّن للزباين إلا بعد ما تكبسي «احفظي».';
+}
+function renderPlist(){
+  const list = W.products.filter(p => p.sec === asec);
+  document.querySelectorAll('[data-asec]').forEach(b => b.classList.toggle('on', b.dataset.asec === asec));
+  $('#plist').innerHTML = list.length ? list.map(p => `
+    <div class="prow">
+      <div class="mini">${visual(p)}</div>
+      <div><h4>${esc(p.name)}</h4><small>${esc(p.cat || '')} · ${money(p.price)}</small></div>
+      <div class="acts"><button class="btn small" type="button" data-edit="${esc(p.id)}">تعديل</button><button class="btn small danger" type="button" data-del="${esc(p.id)}">حذف</button></div>
+    </div>`).join('') : '<p class="hint">ما في قطع بهالقسم.</p>';
+  $('#cats').innerHTML = [...new Set(W.products.map(p => p.cat).filter(Boolean))].map(c => `<option value="${esc(c)}">`).join('');
+}
+function setPrev(local){
+  const src = local || fImg;
+  $('#f-prev').innerHTML = src ? `<img src="${esc(src)}" alt="">` : I[$('#f-icon').value];
+  $('#f-noimg').hidden = !fImg;
+}
+function resetForm(){
+  editing = null; fImg = '';
+  ['f-cat','f-name','f-desc','f-price','f-old','f-tag'].forEach(id => $('#'+id).value = '');
+  $('#f-sec').value = asec; $('#f-icon').value = asec === 'men' ? 'watch' : 'necklace';
+  $('#formTitle').textContent = 'إضافة قطعة جديدة'; $('#f-save').textContent = 'أضيفي القطعة';
+  $('#formReset').hidden = true; $('#f-err').hidden = true; setPrev();
+}
+function editItem(id){
+  const p = W.products.find(x => x.id === id); if (!p) return;
+  editing = id; fImg = p.img || '';
+  $('#f-sec').value = p.sec; $('#f-cat').value = p.cat || ''; $('#f-name').value = p.name;
+  $('#f-desc').value = p.desc || ''; $('#f-price').value = p.price; $('#f-old').value = p.old || '';
+  $('#f-tag').value = p.tag || ''; $('#f-icon').value = p.icon || 'necklace';
+  $('#formTitle').textContent = 'تعديل: ' + p.name; $('#f-save').textContent = 'حطّي التعديل';
+  $('#formReset').hidden = false; $('#f-err').hidden = true; setPrev();
+  $('#formPanel').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+function fail(msg){ $('#f-err').textContent = msg; $('#f-err').hidden = false; }
+function saveItem(){
+  if (uploading) return fail('استني لتخلص الصورة ترفع.');
+  const name = $('#f-name').value.trim(), price = parseFloat($('#f-price').value);
+  if (!name || !(price >= 0)) return fail('لازم تكتبي اسم القطعة وسعرها.');
+  const item = {
+    id: editing || ('p' + Date.now().toString(36)),
+    sec: $('#f-sec').value, cat: $('#f-cat').value.trim(), icon: $('#f-icon').value,
+    name, desc: $('#f-desc').value.trim(), price, old: parseFloat($('#f-old').value) || 0,
+    tag: $('#f-tag').value.trim(), img: fImg
+  };
+  if (editing) W.products = W.products.map(p => p.id === editing ? item : p);
+  else W.products.push(item);
+  asec = item.sec; setDirty(true); resetForm(); renderPlist();
+  $('#saveMsg').textContent = 'انزادت. كبسي «احفظي» لتبيّن للزباين.';
+}
+function shrink(file){
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file), im = new Image();
+    im.onload = () => {
+      const k = Math.min(1, 900 / Math.max(im.width, im.height));
+      const c = document.createElement('canvas'); c.width = Math.round(im.width*k); c.height = Math.round(im.height*k);
+      const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+      ctx.drawImage(im, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', .82));
+    };
+    im.onerror = () => { URL.revokeObjectURL(url); rej(new Error('read')); };
+    im.src = url;
+  });
+}
+async function publishAll(){
+  W.whatsapp = $('#a-wa').value.trim();
+  W.menLine = $('#a-men').value.trim() || 'تفاصيل راقية بتكمّل حضورك';
+  W.womenLine = $('#a-women').value.trim() || 'لمسة أناقة بتكمّل إطلالتك';
+  $('#publish').disabled = true; $('#saveMsg').textContent = 'عم يحفظ…';
+  try { await api('PUT', '/api/data', W); $('#saveMsg').textContent = 'انحفظ. صار بيبيّن للزباين.'; }
+  catch (e) { if (e.message !== 'auth') { $('#saveMsg').textContent = 'ما زبط الحفظ. جرّبي كمان مرة.'; $('#publish').disabled = false; } }
+}
+
+['a-wa','a-men','a-women'].forEach(id => $('#'+id).addEventListener('input', () => setDirty(true)));
+$('#f-icon').onchange = () => setPrev();
+$('#f-sec').onchange = () => { if (!editing) { asec = $('#f-sec').value; renderPlist(); } };
+$('#f-file').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  $('#f-err').hidden = true;
+  let data;
+  try { data = await shrink(f); } catch (err) { return fail('ما قدرت إفتح هالصورة. جرّبي صورة تانية.'); }
+  setPrev(data); uploading = true; $('#f-up').hidden = false; $('#f-save').disabled = true;
+  try { const j = await api('POST', '/api/upload', { data }); fImg = j.img; setPrev(); }
+  catch (err) { if (err.message !== 'auth') { fail('ما زبط رفع الصورة. جرّبي كمان مرة.'); setPrev(); } }
+  uploading = false; $('#f-up').hidden = true; $('#f-save').disabled = false;
+};
+$('#f-noimg').onclick = () => { fImg = ''; setPrev(); };
+$('#f-save').onclick = saveItem;
+$('#formReset').onclick = resetForm;
+$('#plist').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.edit) editItem(b.dataset.edit);
+  if (b.dataset.del) {
+    if (b.dataset.sure) { const id = b.dataset.del; W.products = W.products.filter(p => p.id !== id); setDirty(true); if (editing === id) resetForm(); renderPlist(); }
+    else { b.dataset.sure = '1'; b.textContent = 'أكيد؟'; }
+  }
+});
+document.querySelectorAll('[data-asec]').forEach(b => b.onclick = () => { asec = b.dataset.asec; if (!editing) $('#f-sec').value = asec; renderPlist(); });
+$('#clearAll').onclick = e => {
+  const b = e.currentTarget;
+  if (b.dataset.sure) { W.products = []; setDirty(true); resetForm(); renderPlist(); b.textContent = 'مسح كل القطع'; delete b.dataset.sure; }
+  else { b.dataset.sure = '1'; b.textContent = 'أكيد؟ كبسي كمان مرة لتمسحي كل شي'; }
+};
+$('#publish').onclick = publishAll;
+window.addEventListener('beforeunload', e => { if (!$('#publish').disabled) { e.preventDefault(); e.returnValue = ''; } });
+
+if (token) {
+  fetch('/api/check', { headers: { Authorization: 'Bearer ' + token } })
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(j => enter(j.storage))
+    .catch(() => showLogin());
+}
+</script>
+</body>
+</html>

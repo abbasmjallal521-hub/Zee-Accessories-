@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: zee
+    runtime: node
+    plan: free
+    buildCommand: echo "no build needed"
+    startCommand: node server.js
+    autoDeploy: true
+    envVars:
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GITHUB_REPO
+        value: abbasmjallal521-hub/zee
+      - key: DATA_BRANCH
+        value: data
