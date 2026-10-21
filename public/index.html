@@ -167,7 +167,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') openCart(fal
 
 setSec(sec);
 renderCart();
-fetch('/api/products').then(r => r.json()).then(d => { D = d; loaded = true; setSec(sec); renderCart(); })
+const fromGitHub = () => fetch(DATA_BASE + 'products.json?v=' + Math.floor(Date.now() / 60000), { cache: 'no-store' })
+  .then(r => r.ok ? r.json() : Promise.reject()).then(d => { FROM_GITHUB = true; return d; });
+const fromServer = () => fetch('/api/products').then(r => r.ok ? r.json() : Promise.reject());
+fromGitHub().catch(fromServer)
+  .then(d => { D = d; loaded = true; setSec(sec); renderCart(); })
   .catch(() => { $('#grid').innerHTML = '<p class="none">ما قدرنا نحمّل القطع. جرّب حدّث الصفحة.</p>'; });
 </script>
 </body>

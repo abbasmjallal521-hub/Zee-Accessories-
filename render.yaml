@@ -15,3 +15,15 @@ services:
         value: abbasmjallal521-hub/Zee-Accessories-
       - key: DATA_BRANCH
         value: data
+  - type: web
+    name: zeeaccessories
+    runtime: static
+    buildCommand: echo "static shop"
+    staticPublishPath: ./public
+    routes:
+      - type: redirect
+        source: /admin
+        destination: https://zee-accessories.onrender.com/admin
+      - type: redirect
+        source: /admin.html
+        destination: https://zee-accessories.onrender.com/admin

@@ -17,7 +17,12 @@ const I = {
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money = n => '$' + (+n).toFixed(n % 1 ? 2 : 0);
-const pics = p => (Array.isArray(p.imgs) && p.imgs.length) ? p.imgs : (p.img ? [p.img] : []);
+// Shop data lives on the repo's data branch. The static site reads it straight from GitHub
+// (never sleeps); the admin server serves the same files under /api/products and /img/.
+const DATA_BASE = 'https://raw.githubusercontent.com/abbasmjallal521-hub/Zee-Accessories-/data/';
+let FROM_GITHUB = false;
+const src = u => FROM_GITHUB && /^\/img\//.test(u) ? DATA_BASE + 'images/' + u.slice(5) : u;
+const pics = p => ((Array.isArray(p.imgs) && p.imgs.length) ? p.imgs : (p.img ? [p.img] : [])).map(src);
 const visual = p => pics(p).length ? `<img src="${esc(pics(p)[0])}" alt="" loading="lazy">` : (I[p.icon] || I.necklace);
 // Card picture: one image, a swipeable set with dots, or the gold icon
 const gallery = p => {
