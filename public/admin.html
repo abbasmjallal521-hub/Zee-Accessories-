@@ -50,14 +50,12 @@
 
     <div class="panel" id="formPanel">
       <h3><span id="formTitle">إضافة قطعة جديدة</span><button class="btn small" id="formReset" type="button" hidden>إلغاء التعديل</button></h3>
-      <div class="photo">
-        <div class="prev" id="f-prev"></div>
-        <div class="acts">
-          <span class="btn dark file">اختاري صورة من الغاليري<input type="file" id="f-file" accept="image/*"></span>
-          <button class="btn small danger" id="f-noimg" type="button" hidden>شيلي الصورة</button>
-          <span class="uploading" id="f-up" hidden>عم ترفع الصورة…</span>
-        </div>
+      <div class="thumbs" id="f-thumbs"></div>
+      <div class="photo-acts">
+        <span class="btn dark file">زيدي صور من الغاليري<input type="file" id="f-file" accept="image/*" multiple></span>
+        <span class="uploading" id="f-up" hidden></span>
       </div>
+      <p class="hint">فيكي تختاري لحد ١٠ صور. الصورة يلي عليها ★ هي يلي بتبيّن أول شي. الزبون بيسحب عالصورة ليشوف الباقي.</p>
       <div class="fields">
         <label>القسم<select id="f-sec"><option value="women">نسائي</option><option value="men">رجالي</option></select></label>
         <label>النوع<input id="f-cat" list="cats" placeholder="مثلاً: عقود"></label>
@@ -95,7 +93,8 @@
 <script>
 let token = '';
 try { token = localStorage.getItem('zee-admin') || ''; } catch(e) {}
-let W = null, editing = null, fImg = '', asec = 'women', uploading = false;
+let W = null, editing = null, fImgs = [], asec = 'women', uploading = 0;
+const MAX_IMGS = 10;
 
 async function api(method, url, body){
   const r = await fetch(url, { method, headers: { 'Content-Type':'application/json', Authorization:'Bearer ' + token }, body: body ? JSON.stringify(body) : undefined });
@@ -148,13 +147,19 @@ function renderPlist(){
     </div>`).join('') : '<p class="hint">ما في قطع بهالقسم.</p>';
   $('#cats').innerHTML = [...new Set(W.products.map(p => p.cat).filter(Boolean))].map(c => `<option value="${esc(c)}">`).join('');
 }
-function setPrev(local){
-  const src = local || fImg;
-  $('#f-prev').innerHTML = src ? `<img src="${esc(src)}" alt="">` : I[$('#f-icon').value];
-  $('#f-noimg').hidden = !fImg;
+function setPrev(){
+  const items = fImgs.map((u, i) => `
+    <div class="thumb${i ? '' : ' main'}"><img src="${esc(u)}" alt="">
+      <button class="rm" type="button" data-rm="${i}" aria-label="شيلي الصورة">×</button>
+      ${i ? `<button class="star" type="button" data-main="${i}" aria-label="خليها الصورة الأساسية">★</button>` : '<span class="lbl">الأساسية</span>'}
+    </div>`).join('');
+  const busy = Array.from({ length: uploading }, () => '<div class="thumb busy">عم ترفع…</div>').join('');
+  $('#f-thumbs').innerHTML = items + busy || `<div class="thumb busy">${I[$('#f-icon').value]}</div>`;
+  $('#f-up').hidden = !uploading;
+  $('#f-up').textContent = uploading ? `عم ترفع ${uploading} صور…` : '';
 }
 function resetForm(){
-  editing = null; fImg = '';
+  editing = null; fImgs = [];
   ['f-cat','f-name','f-desc','f-price','f-old','f-tag'].forEach(id => $('#'+id).value = '');
   $('#f-sec').value = asec; $('#f-icon').value = asec === 'men' ? 'watch' : 'necklace';
   $('#formTitle').textContent = 'إضافة قطعة جديدة'; $('#f-save').textContent = 'أضيفي القطعة';
@@ -162,7 +167,7 @@ function resetForm(){
 }
 function editItem(id){
   const p = W.products.find(x => x.id === id); if (!p) return;
-  editing = id; fImg = p.img || '';
+  editing = id; fImgs = pics(p).slice();
   $('#f-sec').value = p.sec; $('#f-cat').value = p.cat || ''; $('#f-name').value = p.name;
   $('#f-desc').value = p.desc || ''; $('#f-price').value = p.price; $('#f-old').value = p.old || '';
   $('#f-tag').value = p.tag || ''; $('#f-icon').value = p.icon || 'necklace';
@@ -179,7 +184,7 @@ function saveItem(){
     id: editing || ('p' + Date.now().toString(36)),
     sec: $('#f-sec').value, cat: $('#f-cat').value.trim(), icon: $('#f-icon').value,
     name, desc: $('#f-desc').value.trim(), price, old: parseFloat($('#f-old').value) || 0,
-    tag: $('#f-tag').value.trim(), img: fImg
+    tag: $('#f-tag').value.trim(), imgs: fImgs.slice(), img: fImgs[0] || ''
   };
   if (editing) W.products = W.products.map(p => p.id === editing ? item : p);
   else W.products.push(item);
@@ -213,16 +218,30 @@ async function publishAll(){
 $('#f-icon').onchange = () => setPrev();
 $('#f-sec').onchange = () => { if (!editing) { asec = $('#f-sec').value; renderPlist(); } };
 $('#f-file').onchange = async e => {
-  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  let files = [...e.target.files]; e.target.value = ''; if (!files.length) return;
   $('#f-err').hidden = true;
-  let data;
-  try { data = await shrink(f); } catch (err) { return fail('ما قدرت إفتح هالصورة. جرّبي صورة تانية.'); }
-  setPrev(data); uploading = true; $('#f-up').hidden = false; $('#f-save').disabled = true;
-  try { const j = await api('POST', '/api/upload', { data }); fImg = j.img; setPrev(); }
-  catch (err) { if (err.message !== 'auth') { fail('ما زبط رفع الصورة. جرّبي كمان مرة.'); setPrev(); } }
-  uploading = false; $('#f-up').hidden = true; $('#f-save').disabled = false;
+  const room = MAX_IMGS - fImgs.length - uploading;
+  if (room <= 0) return fail('وصلتي لـ ١٠ صور، شيلي وحدة لتزيدي.');
+  if (files.length > room) { files = files.slice(0, room); fail('زدت بس ' + room + ' صور، الحد ١٠.'); }
+  uploading += files.length; setPrev(); $('#f-save').disabled = true;
+  let failed = 0;
+  for (const f of files) {
+    try {
+      const data = await shrink(f);
+      const j = await api('POST', '/api/upload', { data });
+      fImgs.push(j.img);
+    } catch (err) { if (err.message === 'auth') { uploading = 0; return; } failed++; }
+    uploading--; setPrev();
+  }
+  $('#f-save').disabled = false;
+  if (failed) fail(failed === 1 ? 'صورة وحدة ما ارتفعت. جرّبي زيديها كمان مرة.' : failed + ' صور ما ارتفعوا. جرّبي زيديهن كمان مرة.');
 };
-$('#f-noimg').onclick = () => { fImg = ''; setPrev(); };
+$('#f-thumbs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.rm) fImgs.splice(+b.dataset.rm, 1);
+  if (b.dataset.main) { const [u] = fImgs.splice(+b.dataset.main, 1); fImgs.unshift(u); }
+  setPrev();
+});
 $('#f-save').onclick = saveItem;
 $('#formReset').onclick = resetForm;
 $('#plist').addEventListener('click', e => {

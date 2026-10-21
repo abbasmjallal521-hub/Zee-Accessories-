@@ -144,8 +144,8 @@ function clean(d) {
     price: num(p.price),
     old: num(p.old),
     tag: str(p.tag, 24),
-    img: /^\/img\/[a-z0-9-]+\.jpg$/.test(p.img || '') ? p.img : ''
-  })).filter(p => p.name);
+    imgs: [...new Set((Array.isArray(p.imgs) ? p.imgs : [p.img]).filter(u => /^\/img\/[a-z0-9-]+\.jpg$/.test(u || '')))].slice(0, 10)
+  })).filter(p => p.name).map(p => ({ ...p, img: p.imgs[0] || '' }));
   return {
     whatsapp: str(d.whatsapp, 20).replace(/[^\d]/g, ''),
     menLine: str(d.menLine, 80),

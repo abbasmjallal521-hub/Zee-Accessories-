@@ -108,7 +108,7 @@ function renderGrid(){
   $('#secCount').textContent = list.length ? list.length + ' قطع' : '';
   $('#grid').innerHTML = list.length ? list.map(p => `
     <article class="card">
-      <div class="pic">${p.tag ? `<span class="tag">${esc(p.tag)}</span>` : ''}${visual(p)}</div>
+      <div class="pic">${p.tag ? `<span class="tag">${esc(p.tag)}</span>` : ''}${gallery(p)}</div>
       <div class="info">
         <h3>${esc(p.name)}</h3>${p.desc ? `<p>${esc(p.desc)}</p>` : ''}
         <div class="row">
@@ -149,6 +149,11 @@ function openCart(o){ $('#drawer').classList.toggle('open', o); $('#shade').hidd
 
 document.querySelector('.switch').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setSec(b.dataset.sec); });
 $('#filters').addEventListener('click', e => { const b = e.target.closest('button'); if (b){ cat = b.dataset.cat; renderFilters(); renderGrid(); } });
+$('#grid').addEventListener('scroll', e => {
+  const t = e.target; if (!t.classList || !t.classList.contains('slides')) return;
+  const i = Math.round(t.scrollLeft / t.clientWidth);
+  t.parentElement.querySelectorAll('.dots i').forEach((d, k) => d.classList.toggle('on', k === i));
+}, true);
 $('#grid').addEventListener('click', e => { const b = e.target.closest('.add'); if (b) change(b.dataset.id, 1); });
 $('#items').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;

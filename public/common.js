@@ -17,4 +17,12 @@ const I = {
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money = n => '$' + (+n).toFixed(n % 1 ? 2 : 0);
-const visual = p => p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : (I[p.icon] || I.necklace);
+const pics = p => (Array.isArray(p.imgs) && p.imgs.length) ? p.imgs : (p.img ? [p.img] : []);
+const visual = p => pics(p).length ? `<img src="${esc(pics(p)[0])}" alt="" loading="lazy">` : (I[p.icon] || I.necklace);
+// Card picture: one image, a swipeable set with dots, or the gold icon
+const gallery = p => {
+  const list = pics(p);
+  if (list.length < 2) return visual(p);
+  return `<div class="slides">${list.map(u => `<img src="${esc(u)}" alt="" loading="lazy">`).join('')}</div>`
+    + `<div class="dots">${list.map((_, i) => `<i class="${i ? '' : 'on'}"></i>`).join('')}</div>`;
+};
